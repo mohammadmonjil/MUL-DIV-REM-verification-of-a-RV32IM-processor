@@ -27,7 +27,7 @@ ii) The multiplier’s output is written back to the correct destination registe
 Since the multiplier/divisor block itself is already verified (though at reduced width), these two properties together provide confidence that mul/div/rem instructions are correctly implemented at the processor level. 
 
 
-1. **Multiplier/divisor block verification**:
+## Multiplier/divisor block verification
 
 The multiplier/divisor block `uriscv_muldiv.v` was not parameterized, the operands were all 32 bits which could not be verified directly. So I modified the block and create a parameterized version `uriscv_muldiv_param.v`. The localparam N can be used to change the operand length. I verified this block with N = 16. 
 
@@ -38,7 +38,7 @@ The multiplier/divisor block `uriscv_muldiv.v` was not parameterized, the operan
   - `DIV`, `DIVU`, `REM`, `REMU`
 - Focused on checking correctness of results based on standard RISC-V behavior.
 
-2. **Blackboxing & MUL/DIV/REM instruction verification**:  
+## Blackboxing & MUL/DIV/REM instruction verification 
    Once verified, the block was blackboxed, and **assumptions** were written on its output control signals based on input control signals. We do not put any assumptions on the data output of the block, formal tool is free to put any value there. We only verify, that the multiplier/divisor block gets correct operands or register values (according to the opcode) in its input and the output of the block is written to the correct destination register according to instruction opcode.
 
 We put assumptions on the output control signals of the multiplier block only. For example, after `valid_i` is asserted it will take 2 cycles for the output to appear for multiplication and 32 cycles for division/rem operations and the `ready_o` signal will be asserted.
